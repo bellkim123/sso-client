@@ -1,0 +1,11 @@
+﻿# Node.js 의존성 폴더
+node_modules/
+
+# WebStorm (JetBrains) 프로젝트 설정 폴더
+.idea/
+
+# 환경 설정 파일 예시
+.env
+.DS_Store
+dist/
+build/
