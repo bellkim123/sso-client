@@ -1,11 +1,9 @@
-﻿// src/components/Main.jsx
-
-import kakaoBtn from "../assets/kakao-login-button.png";
+﻿import kakaoBtn from "../assets/kakao-login-button.png";
 import naverBtn from "../assets/naver-login-button.png";
 
 function Main({accessToken, handleNaverLogin, handleKakaoLogin, handleAuthNice, handleLogout}) {
     const profileImg =
-        "https://raw.githubusercontent.com/ionic-team/ionicons/master/src/svg/person-circle-outline.svg";
+        "https://i.pinimg.com/736x/2b/45/45/2b4545e9efe40d7aecd1cf04693658f1.jpg";
 
     return (
         <div
@@ -47,16 +45,35 @@ function Main({accessToken, handleNaverLogin, handleKakaoLogin, handleAuthNice, 
     );
 }
 
-function LoggedInCard({accessToken, profileImg, handleAuthNice, handleLogout}) {
+function LoggedInCard({
+                          accessToken,
+                          profileImg,
+                          handleAuthNice,
+                          handleLogout,
+                      }) {
     return (
         <>
-            <img
-                src={profileImg}
-                alt="프로필"
-                width={70}
-                height={70}
-                style={{marginBottom: 18, borderRadius: "50%"}}
-            />
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginBottom: 12
+            }}>
+                <img
+                    src={profileImg}
+                    alt="프로필"
+                    width={150}
+                    height={150}
+                    style={{
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                        objectPosition: "center",
+                        boxShadow: "0 6px 18px 0 rgba(60,100,90,0.09)",
+                        border: "4px solid #e8ecf0",
+                        background: "#eef3f6"
+                    }}
+                />
+            </div>
             <div
                 style={{
                     padding: "1rem",

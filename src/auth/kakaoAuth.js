@@ -1,5 +1,5 @@
 ﻿export async function handleKakaoLogin() {
-    const serviceType = 3;
+    const serviceType = 2;
     try {
         const res = await fetch(`http://localhost:5155/api/auth/kakao/login?serviceType=${serviceType}`);
         if (!res.ok) throw new Error('카카오 로그인 URL 요청 실패');

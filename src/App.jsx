@@ -7,6 +7,7 @@ import Main from "./components/Main";
 import {getCookie, deleteCookie} from "./utils/cookie";
 import {handleNaverLogin} from "./auth/naverAuth";
 import {handleKakaoLogin} from "./auth/kakaoAuth";
+import {handleAuthNice} from "./auth/niceAuth";
 
 function App() {
     const [accessToken, setAccessToken] = useState(null);
@@ -30,32 +31,7 @@ function App() {
         window.location.href = "/";
     };
 
-    const handleAuthNice = async () => {
-        try {
-            const res = await fetch("/user/AuthNice", {method: "POST"});
-            if (!res.ok) throw new Error("본인 인증 실패");
-
-            const {data} = await res.json();
-            const {requestUrl, postData} = data.data;
-
-            const form = document.createElement("form");
-            form.method = "POST";
-            form.action = requestUrl;
-
-            for (const key in postData) {
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = key;
-                input.value = postData[key];
-                form.appendChild(input);
-            }
-
-            document.body.appendChild(form);
-            form.submit();
-        } catch (e) {
-            alert("본인 인증 요청 중 오류 발생");
-        }
-    };
+    // handleAuthNice는 props로 바로 전달
 
     return (
         <Router>
