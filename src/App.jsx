@@ -3,6 +3,8 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import AuthCallback from "./components/AuthCallback";
 import LoginSuccess from "./components/LoginSuccess";
 import Main from "./components/Main";
+import PassAuthSuccessPage from "./components/PassAuthSuccessPage";
+import PassAuthFailPage from "./components/PassAuthFailPage";
 
 import {getCookie, deleteCookie} from "./utils/cookie";
 import {handleNaverLogin} from "./auth/naverAuth";
@@ -38,6 +40,10 @@ function App() {
             <Routes>
                 <Route path="/auth/callback" element={<AuthCallback/>}/>
                 <Route path="/login-success" element={<LoginSuccess handleLogout={handleLogout}/>}/>
+                {/* PASS 본인인증 성공/실패 결과 페이지 라우트 추가 */}
+                <Route path="/pass-auth-success" element={<PassAuthSuccessPage/>}/>
+                <Route path="/pass-auth-fail" element={<PassAuthFailPage/>}/>
+                {/* 메인 라우터는 마지막에 와야함 */}
                 <Route
                     path="/*"
                     element={

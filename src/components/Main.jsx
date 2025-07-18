@@ -51,6 +51,8 @@ function LoggedInCard({
                           handleAuthNice,
                           handleLogout,
                       }) {
+    const onPassAuthClick = () => handleAuthNice(accessToken);
+
     return (
         <>
             <div style={{
@@ -101,7 +103,7 @@ function LoggedInCard({
                 </span>
             </div>
             <button
-                onClick={handleAuthNice}
+                onClick={onPassAuthClick}
                 style={{
                     width: "100%",
                     background: "#00b894",
