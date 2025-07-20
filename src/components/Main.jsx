@@ -1,7 +1,14 @@
 ﻿import kakaoBtn from "../assets/kakao-login-button.png";
 import naverBtn from "../assets/naver-login-button.png";
 
-function Main({accessToken, handleNaverLogin, handleKakaoLogin, handleAuthNice, handleLogout}) {
+function Main({
+                  accessToken,
+                  refreshToken,
+                  handleNaverLogin,
+                  handleKakaoLogin,
+                  handleAuthNice,
+                  handleLogout
+              }) {
     const profileImg =
         "https://i.pinimg.com/736x/2b/45/45/2b4545e9efe40d7aecd1cf04693658f1.jpg";
 
@@ -30,6 +37,7 @@ function Main({accessToken, handleNaverLogin, handleKakaoLogin, handleAuthNice, 
                 {accessToken ? (
                     <LoggedInCard
                         accessToken={accessToken}
+                        refreshToken={refreshToken}
                         profileImg={profileImg}
                         handleAuthNice={handleAuthNice}
                         handleLogout={handleLogout}
@@ -47,11 +55,12 @@ function Main({accessToken, handleNaverLogin, handleKakaoLogin, handleAuthNice, 
 
 function LoggedInCard({
                           accessToken,
+                          refreshToken,
                           profileImg,
                           handleAuthNice,
                           handleLogout,
                       }) {
-    const onPassAuthClick = () => handleAuthNice(accessToken);
+    const onPassAuthClick = () => handleAuthNice(accessToken, refreshToken);
 
     return (
         <>
@@ -99,7 +108,7 @@ function LoggedInCard({
                         marginLeft: 4,
                     }}
                 >
-                    {accessToken.slice(0, 10) + "..."}
+                    {accessToken ? accessToken.slice(0, 10) + "..." : ""}
                 </span>
             </div>
             <button

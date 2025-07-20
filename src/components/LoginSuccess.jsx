@@ -1,7 +1,7 @@
 ﻿import {useEffect, useState} from "react";
 import {getCookie} from "../utils/cookie";
 
-function LoginSuccess({handleLogout}) {
+function LoginSuccess() {
     const accessToken = getCookie("access_token");
     const refreshToken = getCookie("refresh_token");
 

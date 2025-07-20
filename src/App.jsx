@@ -13,9 +13,14 @@ import {handleAuthNice} from "./auth/niceAuth";
 
 function App() {
     const [accessToken, setAccessToken] = useState(null);
+    const [refreshToken, setRefreshToken] = useState(null);
 
     useEffect(() => {
-        const syncToken = () => setAccessToken(getCookie("access_token"));
+        // 동기화 함수! (cookie로부터 다시 읽음)
+        const syncToken = () => {
+            setAccessToken(getCookie("access_token"));
+            setRefreshToken(getCookie("refresh_token"));
+        };
         syncToken();
 
         window.addEventListener("focus", syncToken);
@@ -30,25 +35,25 @@ function App() {
         deleteCookie("access_token");
         deleteCookie("refresh_token");
         setAccessToken(null);
+        setRefreshToken(null);
         window.location.href = "/";
     };
 
-    // handleAuthNice는 props로 바로 전달
+    // handleAuthNice도 props로 전달
 
     return (
         <Router>
             <Routes>
                 <Route path="/auth/callback" element={<AuthCallback/>}/>
                 <Route path="/login-success" element={<LoginSuccess handleLogout={handleLogout}/>}/>
-                {/* PASS 본인인증 성공/실패 결과 페이지 라우트 추가 */}
                 <Route path="/pass-auth-success" element={<PassAuthSuccessPage/>}/>
                 <Route path="/pass-auth-fail" element={<PassAuthFailPage/>}/>
-                {/* 메인 라우터는 마지막에 와야함 */}
                 <Route
                     path="/*"
                     element={
                         <Main
                             accessToken={accessToken}
+                            refreshToken={refreshToken}
                             handleNaverLogin={handleNaverLogin}
                             handleKakaoLogin={handleKakaoLogin}
                             handleAuthNice={handleAuthNice}
