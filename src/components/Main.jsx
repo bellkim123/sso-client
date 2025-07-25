@@ -6,6 +6,7 @@ function Main({
                   refreshToken,
                   handleNaverLogin,
                   handleKakaoLogin,
+                  handleEmailLogin,
                   handleAuthNice,
                   handleLogout
               }) {
@@ -46,6 +47,7 @@ function Main({
                     <LoginButtons
                         handleNaverLogin={handleNaverLogin}
                         handleKakaoLogin={handleKakaoLogin}
+                        handleEmailLogin={handleEmailLogin} // 전달
                     />
                 )}
             </div>
@@ -171,14 +173,17 @@ function LoginButtons({handleNaverLogin, handleKakaoLogin}) {
         marginBottom: 12,
         cursor: "pointer",
         boxSizing: "border-box",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
     };
 
     return (
         <>
             <p
                 style={{
-                    color: "#e74c3c",
-                    background: "#fbeee6",
+                    color: "#C4B5FD",
+                    background: "#F3F0FF",
                     borderRadius: 8,
                     padding: "0.7em 0.3em",
                     fontWeight: "bold",
@@ -192,6 +197,19 @@ function LoginButtons({handleNaverLogin, handleKakaoLogin}) {
             </button>
             <button onClick={handleKakaoLogin} style={btnStyle}>
                 <img src={kakaoBtn} alt="카카오 로그인 버튼" style={imgStyle}/>
+            </button>
+            <button
+                onClick={() => window.location.href = "/email-login"}
+                style={{
+                    ...btnStyle,
+                    background: "#EDE9FE",  // 연보라색 적용!
+                    color: "#7C3AED",        // 진한 보라 텍스트
+                    fontWeight: "bold",
+                    fontSize: "1rem",
+                    marginBottom: 0,
+                }}
+            >
+                이메일 로그인
             </button>
         </>
     );
