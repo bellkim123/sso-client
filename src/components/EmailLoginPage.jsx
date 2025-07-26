@@ -1,63 +1,55 @@
-﻿import {useState} from "react";
-import {loginWithEmail} from "../auth/emailAuth";
+﻿import React from "react";
 
 function EmailLoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            const result = await loginWithEmail(email, password);
-            if (result.success) {
-                alert("로그인 성공!");
-                window.location.href = "/"; // 원하는 페이지로 이동
-            } else {
-                alert(result.message || "로그인에 실패했습니다.");
-            }
-        } catch (err) {
-            alert(err.message || "로그인에 실패했습니다.");
-        }
-        setLoading(false);
-    };
-
     return (
         <div style={pageStyle}>
-            <form onSubmit={handleLogin} style={formStyle}>
+            <form
+                method="POST"
+                action="http://localhost:5155/api/auth/email/login"
+                style={formStyle}
+            >
                 <h2 style={headingStyle}>이메일 로그인</h2>
                 <div style={inputGroupStyle}>
                     <input
+                        name="email"
                         type="email"
                         placeholder="이메일"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
                         required
+                        autoComplete="username"
                         style={inputStyle}
                     />
                     <input
+                        name="password"
                         type="password"
                         placeholder="비밀번호"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
                         required
+                        autoComplete="current-password"
                         style={inputStyle}
                     />
+                    <input
+                        type="hidden"
+                        name="serviceType"
+                        value="2"
+                    />
                 </div>
-                <button type="submit" style={btnStyle} disabled={loading}>
-                    {loading ? "로그인 중..." : "로그인"}
+                <button type="submit" style={btnStyle}>
+                    로그인
                 </button>
                 <p style={helperStyle}>
                     아직 계정이 없으신가요?{" "}
                     <a href="/register" style={linkStyle}>회원가입</a>
+                </p>
+                <p style={{ ...helperStyle, marginTop: 6 }}>
+                    비밀번호를 잃어버리셨나요?{" "}
+                    <a href="/password-reset-link" style={linkStyle}>비밀번호 재설정</a>
                 </p>
             </form>
         </div>
     );
 }
 
-// ====== 스타일 ======
+// ===== 스타일 =====
+
 const pageStyle = {
     minHeight: "100vh",
     display: "flex",
@@ -82,7 +74,7 @@ const headingStyle = {
     marginBottom: "2rem",
     fontWeight: 700,
     fontSize: "1.3rem",
-    letterSpacing: "-0.02em"
+    letterSpacing: "-0.02em",
 };
 
 const inputGroupStyle = {
@@ -90,7 +82,7 @@ const inputGroupStyle = {
     display: "flex",
     flexDirection: "column",
     gap: "0.7rem",
-    marginBottom: "1.25rem"
+    marginBottom: "1.25rem",
 };
 
 const inputStyle = {
