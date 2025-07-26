@@ -1,5 +1,7 @@
+import { BASE_URL } from "../config/apiConfig";
+
 export async function refreshAccessToken(refreshToken) {
-    const res = await fetch("http://localhost:5155/api/auth/token/refresh", {
+    const res = await fetch(`${BASE_URL}/auth/token/refresh`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ refreshToken })

@@ -1,5 +1,4 @@
-﻿const BASE_URL = "http://localhost:5155/api/auth/email";
-const SERVICE_TYPE = 2; // 서버 enum 방식에 맞게 수정하세요
+﻿import { BASE_URL, SERVICE_TYPE } from "../config/apiConfig";
 
 /** 이메일 인증번호 발송 */
 export async function sendVerificationCode(email) {

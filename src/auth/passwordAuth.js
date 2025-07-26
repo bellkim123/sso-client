@@ -1,7 +1,6 @@
-const BASE_URL = "http://localhost:5155/api/auth/email";
-const SERVICE_TYPE = 2; // 필요에 따라 변경
+import { BASE_URL, SERVICE_TYPE } from "../config/apiConfig";
 
-// 비밀번호 재설정 링크 이메일 발송
+/** 비밀번호 재설정 링크 이메일 발송 */
 export async function sendResetLink(email) {
     const res = await fetch(`${BASE_URL}/send-reset-link`, {
         method: "POST",
@@ -15,7 +14,7 @@ export async function sendResetLink(email) {
     return data;
 }
 
-// 비밀번호 재설정 (token, newPassword)
+/** 비밀번호 재설정 제출 */
 export async function resetPassword(token, newPassword) {
     const res = await fetch(`${BASE_URL}/reset-password`, {
         method: "PATCH",

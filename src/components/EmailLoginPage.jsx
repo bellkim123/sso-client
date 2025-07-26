@@ -1,11 +1,12 @@
 ﻿import React from "react";
+import { BASE_URL, SERVICE_TYPE } from "../config/apiConfig";
 
 function EmailLoginPage() {
     return (
         <div style={pageStyle}>
             <form
                 method="POST"
-                action="http://localhost:5155/api/auth/email/login"
+                action={`${BASE_URL}/login`}  // 환경변수 기반 URL 사용
                 style={formStyle}
             >
                 <h2 style={headingStyle}>이메일 로그인</h2>
@@ -29,7 +30,7 @@ function EmailLoginPage() {
                     <input
                         type="hidden"
                         name="serviceType"
-                        value="2"
+                        value={SERVICE_TYPE}  // config에서 관리하는 문자열 사용
                     />
                 </div>
                 <button type="submit" style={btnStyle}>
@@ -48,7 +49,7 @@ function EmailLoginPage() {
     );
 }
 
-// ===== 스타일 =====
+// ===== 스타일 (생략 가능, 기존과 동일하게 유지) =====
 
 const pageStyle = {
     minHeight: "100vh",

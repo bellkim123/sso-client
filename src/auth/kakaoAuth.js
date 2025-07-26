@@ -1,7 +1,9 @@
-﻿export async function handleKakaoLogin() {
-    const serviceType = 2;
+﻿import { BASE_URL, SERVICE_TYPE } from "../config/apiConfig";
+
+/** 카카오 로그인 URL 호출 후 리다이렉트 */
+export async function handleKakaoLogin() {
     try {
-        const res = await fetch(`http://localhost:5155/api/auth/kakao/login?serviceType=${serviceType}`);
+        const res = await fetch(`${BASE_URL}/auth/kakao/login?serviceType=${SERVICE_TYPE}`);
         if (!res.ok) throw new Error('카카오 로그인 URL 요청 실패');
         const result = await res.json();
         if (result.success && result.data) {
