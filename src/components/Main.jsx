@@ -1,4 +1,5 @@
-﻿import kakaoBtn from "../assets/kakao-login-button.png";
+﻿import React, {useEffect} from "react";
+import kakaoBtn from "../assets/kakao-login-button.png";
 import naverBtn from "../assets/naver-login-button.png";
 
 function Main({
@@ -10,8 +11,19 @@ function Main({
                   handleAuthNice,
                   handleLogout
               }) {
-    const profileImg =
-        "https://i.pinimg.com/736x/2b/45/45/2b4545e9efe40d7aecd1cf04693658f1.jpg";
+    const profileImg = "https://i.pinimg.com/736x/2b/45/45/2b4545e9efe40d7aecd1cf04693658f1.jpg";
+
+    useEffect(() => {
+        function onNaverLogin(event) {
+            if (event.origin !== window.location.origin) return;
+            if (event.data.type === "NAVER_LOGIN_SUCCESS") {
+                window.location.reload(); // 강제 새로고침으로 토큰 동기화
+            }
+        }
+
+        window.addEventListener("message", onNaverLogin);
+        return () => window.removeEventListener("message", onNaverLogin);
+    }, []);
 
     return (
         <div
@@ -47,7 +59,7 @@ function Main({
                     <LoginButtons
                         handleNaverLogin={handleNaverLogin}
                         handleKakaoLogin={handleKakaoLogin}
-                        handleEmailLogin={handleEmailLogin} // 전달
+                        handleEmailLogin={handleEmailLogin}
                     />
                 )}
             </div>
@@ -60,7 +72,7 @@ function LoggedInCard({
                           refreshToken,
                           profileImg,
                           handleAuthNice,
-                          handleLogout,
+                          handleLogout
                       }) {
     const onPassAuthClick = () => handleAuthNice(accessToken, refreshToken);
 
@@ -100,16 +112,14 @@ function LoggedInCard({
                 <span role="img" aria-label="login">✅</span>
                 <span style={{marginLeft: 8, fontWeight: 500}}>로그인되었습니다</span>
                 <br/>
-                <span
-                    style={{
-                        color: "#009432",
-                        background: "#dff9fb",
-                        padding: "0.2em 0.5em",
-                        borderRadius: "7px",
-                        fontSize: "0.89em",
-                        marginLeft: 4,
-                    }}
-                >
+                <span style={{
+                    color: "#009432",
+                    background: "#dff9fb",
+                    padding: "0.2em 0.5em",
+                    borderRadius: "7px",
+                    fontSize: "0.89em",
+                    marginLeft: 4,
+                }}>
                     {accessToken ? accessToken.slice(0, 10) + "..." : ""}
                 </span>
             </div>
@@ -126,9 +136,7 @@ function LoggedInCard({
                     fontWeight: "bold",
                     fontSize: "1rem",
                     cursor: "pointer",
-                }}
-            >
-                PASS 본인인증
+                }}>{`PASS 본인인증`}
             </button>
             <button
                 onClick={handleLogout}
@@ -142,54 +150,29 @@ function LoggedInCard({
                     fontWeight: "bold",
                     fontSize: "1rem",
                     marginTop: 6,
-                    cursor: "pointer",
-                }}
-            >
-                로그아웃
+                    cursor: "pointer"
+                }}>로그아웃
             </button>
         </>
     );
 }
 
+// LoginButtons는 디자인/구조 100% 유지
 function LoginButtons({handleNaverLogin, handleKakaoLogin}) {
     const BUTTON_HEIGHT = 54;
     const BUTTON_WIDTH = "100%";
-
-    const imgStyle = {
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-        display: "block",
-    };
-
+    const imgStyle = {width: "100%", height: "100%", objectFit: "cover", display: "block"};
     const btnStyle = {
-        width: BUTTON_WIDTH,
-        height: BUTTON_HEIGHT,
-        background: "transparent",
-        border: "none",
-        padding: 0,
-        overflow: "hidden",
-        borderRadius: 10,
-        marginBottom: 12,
-        cursor: "pointer",
-        boxSizing: "border-box",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        width: BUTTON_WIDTH, height: BUTTON_HEIGHT, background: "transparent",
+        border: "none", padding: 0, overflow: "hidden", borderRadius: 10, marginBottom: 12,
+        cursor: "pointer", boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "center"
     };
-
     return (
         <>
-            <p
-                style={{
-                    color: "#C4B5FD",
-                    background: "#F3F0FF",
-                    borderRadius: 8,
-                    padding: "0.7em 0.3em",
-                    fontWeight: "bold",
-                    marginBottom: "2.1rem",
-                }}
-            >
+            <p style={{
+                color: "#C4B5FD", background: "#F3F0FF", borderRadius: 8,
+                padding: "0.7em 0.3em", fontWeight: "bold", marginBottom: "2.1rem"
+            }}>
                 로그인 해주세요😵‍💫
             </p>
             <button onClick={handleNaverLogin} style={{...btnStyle, marginBottom: 14}}>
@@ -202,14 +185,9 @@ function LoginButtons({handleNaverLogin, handleKakaoLogin}) {
                 onClick={() => window.location.href = "/email-login"}
                 style={{
                     ...btnStyle,
-                    background: "#EDE9FE",  // 연보라색 적용!
-                    color: "#7C3AED",        // 진한 보라 텍스트
-                    fontWeight: "bold",
-                    fontSize: "1rem",
-                    marginBottom: 0,
-                }}
-            >
-                이메일 로그인
+                    background: "#EDE9FE", color: "#7C3AED", fontWeight: "bold",
+                    fontSize: "1rem", marginBottom: 0,
+                }}>이메일 로그인
             </button>
         </>
     );

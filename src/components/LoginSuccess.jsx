@@ -6,6 +6,7 @@ function LoginSuccess() {
     const refreshToken = getCookie("refresh_token");
 
     const [countdown, setCountdown] = useState(3); // 카운트다운 시작값
+    const [copyStatus, setCopyStatus] = useState({access: "", refresh: ""});
 
     useEffect(() => {
         console.log("로그인 성공!", {accessToken, refreshToken});
@@ -23,6 +24,27 @@ function LoginSuccess() {
             clearTimeout(timeout);
         };
     }, [accessToken, refreshToken]);
+
+    const copyToClipboard = (tokenType, tokenValue) => {
+        if (!tokenValue) return;
+        navigator.clipboard.writeText(tokenValue).then(() => {
+            setCopyStatus((prev) => ({
+                ...prev,
+                [tokenType]: "복사 완료!",
+            }));
+            setTimeout(() => {
+                setCopyStatus((prev) => ({
+                    ...prev,
+                    [tokenType]: "",
+                }));
+            }, 1500);
+        }).catch(() => {
+            setCopyStatus((prev) => ({
+                ...prev,
+                [tokenType]: "복사 실패",
+            }));
+        });
+    };
 
     return (
         <div
@@ -57,6 +79,8 @@ function LoginSuccess() {
                     🎉
                 </div>
                 <h1 style={{color: "#0abc64", marginBottom: 8}}>로그인 성공!</h1>
+
+                {/* access_token */}
                 <p
                     style={{
                         margin: "1.2rem 0 0.5rem",
@@ -65,14 +89,37 @@ function LoginSuccess() {
                         color: "#008a32",
                         fontWeight: 500,
                         padding: "0.7em 0.8em",
-                        display: "inline-block",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
                     }}
                 >
-                    access_token:
-                    <code style={{marginLeft: 6, color: "#222", fontWeight: 600}}>
+                    <span>access_token:</span>
+                    <code style={{color: "#222", fontWeight: 600, userSelect: "text"}}>
                         {accessToken ? accessToken.slice(0, 10) + "..." : "없음"}
                     </code>
+                    <button
+                        onClick={() => copyToClipboard("access", accessToken)}
+                        style={{
+                            cursor: accessToken ? "pointer" : "not-allowed",
+                            background: "#0abc64",
+                            border: "none",
+                            color: "white",
+                            borderRadius: 4,
+                            padding: "0.25em 0.5em",
+                            fontWeight: "bold",
+                            fontSize: "0.85rem",
+                        }}
+                        disabled={!accessToken}
+                        type="button"
+                    >
+                        복사
+                    </button>
+                    <span style={{color: "#0abc64", fontWeight: "bold"}}>{copyStatus.access}</span>
                 </p>
+
+                {/* refresh_token */}
                 <p
                     style={{
                         margin: "0.3rem 0 1rem",
@@ -81,14 +128,36 @@ function LoginSuccess() {
                         color: "#257000",
                         fontWeight: 500,
                         padding: "0.7em 0.8em",
-                        display: "inline-block",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
                     }}
                 >
-                    refresh_token:
-                    <code style={{marginLeft: 6, color: "#444", fontWeight: 600}}>
+                    <span>refresh_token:</span>
+                    <code style={{color: "#444", fontWeight: 600, userSelect: "text"}}>
                         {refreshToken ? refreshToken.slice(0, 10) + "..." : "없음"}
                     </code>
+                    <button
+                        onClick={() => copyToClipboard("refresh", refreshToken)}
+                        style={{
+                            cursor: refreshToken ? "pointer" : "not-allowed",
+                            background: "#0abc64",
+                            border: "none",
+                            color: "white",
+                            borderRadius: 4,
+                            padding: "0.25em 0.5em",
+                            fontWeight: "bold",
+                            fontSize: "0.85rem",
+                        }}
+                        disabled={!refreshToken}
+                        type="button"
+                    >
+                        복사
+                    </button>
+                    <span style={{color: "#0abc64", fontWeight: "bold"}}>{copyStatus.refresh}</span>
                 </p>
+
                 <p
                     style={{
                         color: "#005a2c",
