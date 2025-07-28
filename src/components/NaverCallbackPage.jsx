@@ -19,7 +19,7 @@ function NaverCallbackPage() {
         async function fetchToken() {
             try {
                 const res = await fetch(
-                    `${BASE_URL}/auth/naver/callback?code=${code}&state=${state}`,
+                    `${BASE_URL}/auth/naver/token?code=${code}&state=${state}`,
                     {credentials: "include"}
                 );
                 if (!res.ok) throw new Error("토큰 요청 실패");

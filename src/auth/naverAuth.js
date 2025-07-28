@@ -3,7 +3,7 @@
 // 팝업 방식 네이버 로그인
 export async function openNaverLoginPopup() {
     try {
-        const res = await fetch(`${BASE_URL}/auth/naver/login?serviceType=${SERVICE_TYPE}`);
+        const res = await fetch(`${BASE_URL}/auth/naver/url?serviceType=${SERVICE_TYPE}`);
         if (!res.ok) throw new Error('네이버 로그인 URL 요청 실패');
         const result = await res.json();
         if (result.success && result.data) {
