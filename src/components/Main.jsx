@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+﻿import React, {useEffect, useState} from "react";
 import Cookies from "js-cookie";
 import kakaoBtn from "../assets/kakao-login-button.png";
 import naverBtn from "../assets/naver-login-button.png";
@@ -15,17 +15,17 @@ function Main({
     const profileImg = "https://i.pinimg.com/736x/2b/45/45/2b4545e9efe40d7aecd1cf04693658f1.jpg";
 
     useEffect(() => {
-        if (accessToken) Cookies.set("accessToken", accessToken, { expires: 1 });
-        if (refreshToken) Cookies.set("refreshToken", refreshToken, { expires: 7 });
+        if (accessToken) Cookies.set("accessToken", accessToken, {expires: 1});
+        if (refreshToken) Cookies.set("refreshToken", refreshToken, {expires: 7});
     }, [accessToken, refreshToken]);
 
-    const [copied, setCopied] = useState({ key: "", show: false });
+    const [copied, setCopied] = useState({key: "", show: false});
 
     // 복사 함수
     const handleCopy = (key, value) => {
         navigator.clipboard.writeText(value || "");
-        setCopied({ key, show: true });
-        setTimeout(() => setCopied({ key: "", show: false }), 1300);
+        setCopied({key, show: true});
+        setTimeout(() => setCopied({key: "", show: false}), 1300);
     };
 
     useEffect(() => {
@@ -35,6 +35,7 @@ function Main({
                 window.location.reload();
             }
         }
+
         window.addEventListener("message", onNaverLogin);
         return () => window.removeEventListener("message", onNaverLogin);
     }, []);
@@ -61,7 +62,7 @@ function Main({
                     position: "relative",
                 }}
             >
-                <h1 style={{ marginBottom: "2.2rem", color: "#34495e" }}>SSO 클라이언트</h1>
+                <h1 style={{marginBottom: "2.2rem", color: "#34495e"}}>SSO 클라이언트</h1>
                 {accessToken ? (
                     <LoggedInCard
                         accessToken={accessToken}
@@ -86,7 +87,7 @@ function Main({
 
 // ------------------------------------------------------
 // 복사 아이콘 (SVG)
-function CopyIcon({ style }) {
+function CopyIcon({style}) {
     return (
         <svg
             style={style}
@@ -96,9 +97,9 @@ function CopyIcon({ style }) {
             fill="none"
             aria-hidden="true"
         >
-            <rect x="5" y="7" width="10" height="10" rx="3" fill="#0984e3" />
-            <rect x="7" y="3" width="8" height="12" rx="2" fill="#dff9fb" />
-            <rect x="6" y="2" width="10" height="12" rx="2" fill="#0984e3" />
+            <rect x="5" y="7" width="10" height="10" rx="3" fill="#0984e3"/>
+            <rect x="7" y="3" width="8" height="12" rx="2" fill="#dff9fb"/>
+            <rect x="6" y="2" width="10" height="12" rx="2" fill="#0984e3"/>
         </svg>
     );
 }
@@ -156,11 +157,11 @@ function LoggedInCard({
                     }}
                 />
             </div>
-            <div style={{ color: "#009432", fontWeight: "bold", marginBottom: 30 }}>
+            <div style={{color: "#009432", fontWeight: "bold", marginBottom: 30}}>
                 ✅ 로그인되었습니다
             </div>
             <div style={fieldStyle}>
-                <span style={{ minWidth: 115, color: "#636e72" }}>AccessToken:</span>
+                <span style={{minWidth: 115, color: "#636e72"}}>AccessToken:</span>
                 <span
                     style={{
                         fontFamily: "monospace",
@@ -170,8 +171,8 @@ function LoggedInCard({
                         marginRight: 7
                     }}
                 >
-          {tokenShorten(accessToken)}
-        </span>
+                    {tokenShorten(accessToken)}
+                </span>
                 <span
                     onClick={() => handleCopy("accessToken", accessToken)}
                     style={{
@@ -184,8 +185,8 @@ function LoggedInCard({
                     title="AccessToken 복사"
                     role="button"
                 >
-          <CopyIcon />
-        </span>
+                    <CopyIcon/>
+                </span>
                 {/* 복사 토스트 */}
                 {(copied.key === "accessToken" && copied.show) && (
                     <span style={{
@@ -198,14 +199,15 @@ function LoggedInCard({
                         borderRadius: 9,
                         padding: "2px 9px",
                         marginTop: 3,
-                        boxShadow: "0 3px 10px #ddd6"
+                        boxShadow: "0 3px 10px #ddd6",
+                        zIndex: 10,  // z-index 추가
                     }}>
-            복사되었습니다!
-          </span>
+                        복사되었습니다!
+                    </span>
                 )}
             </div>
             <div style={fieldStyle}>
-                <span style={{ minWidth: 115, color: "#636e72" }}>RefreshToken:</span>
+                <span style={{minWidth: 115, color: "#636e72"}}>RefreshToken:</span>
                 <span
                     style={{
                         fontFamily: "monospace",
@@ -215,8 +217,8 @@ function LoggedInCard({
                         marginRight: 7
                     }}
                 >
-          {tokenShorten(refreshToken)}
-        </span>
+                    {tokenShorten(refreshToken)}
+                </span>
                 <span
                     onClick={() => handleCopy("refreshToken", refreshToken)}
                     style={{
@@ -229,8 +231,8 @@ function LoggedInCard({
                     title="RefreshToken 복사"
                     role="button"
                 >
-          <CopyIcon style={{}} />
-        </span>
+                    <CopyIcon/>
+                </span>
                 {/* 복사 토스트 */}
                 {(copied.key === "refreshToken" && copied.show) && (
                     <span style={{
@@ -243,10 +245,11 @@ function LoggedInCard({
                         borderRadius: 9,
                         padding: "2px 9px",
                         marginTop: 3,
-                        boxShadow: "0 3px 10px #ddd6"
+                        boxShadow: "0 3px 10px #ddd6",
+                        zIndex: 10,  // z-index 추가
                     }}>
-            복사되었습니다!
-          </span>
+                        복사되었습니다!
+                    </span>
                 )}
             </div>
             <button
@@ -263,7 +266,8 @@ function LoggedInCard({
                     fontSize: "1rem",
                     cursor: "pointer",
                 }}
-            >PASS 본인인증</button>
+            >PASS 본인인증
+            </button>
             <button
                 onClick={handleLogout}
                 style={{
@@ -278,13 +282,14 @@ function LoggedInCard({
                     marginTop: 6,
                     cursor: "pointer"
                 }}
-            >로그아웃</button>
+            >로그아웃
+            </button>
         </>
     );
 }
 
 // 로그인 버튼들 컴포넌트
-function LoginButtons({ handleNaverLogin, handleKakaoLogin }) {
+function LoginButtons({handleNaverLogin, handleKakaoLogin, handleEmailLogin}) {
     const BUTTON_HEIGHT = 54;
     const BUTTON_WIDTH = "100%";
     const imgStyle = {
@@ -316,11 +321,11 @@ function LoginButtons({ handleNaverLogin, handleKakaoLogin }) {
             }}>
                 로그인 해주세요😵‍💫
             </p>
-            <button onClick={handleNaverLogin} style={{ ...btnStyle, marginBottom: 14 }}>
-                <img src={naverBtn} alt="네이버 로그인 버튼" style={imgStyle} />
+            <button onClick={handleNaverLogin} style={{...btnStyle, marginBottom: 14}}>
+                <img src={naverBtn} alt="네이버 로그인 버튼" style={imgStyle}/>
             </button>
             <button onClick={handleKakaoLogin} style={btnStyle}>
-                <img src={kakaoBtn} alt="카카오 로그인 버튼" style={imgStyle} />
+                <img src={kakaoBtn} alt="카카오 로그인 버튼" style={imgStyle}/>
             </button>
             <button
                 onClick={() => window.location.href = "/email-login"}

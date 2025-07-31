@@ -67,7 +67,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/auth/callback" element={<AuthCallback/>}/>
-                <Route path="/auth/naver/callback-page" element={<NaverCallbackPage/>}/>
+                <Route path="/naver-callback" element={<NaverCallbackPage/>}/>
                 <Route path="/login-success" element={<LoginSuccess handleLogout={handleLogout}/>}/>
                 <Route path="/pass-auth-success" element={<PassAuthSuccessPage/>}/>
                 <Route path="/pass-auth-fail" element={<PassAuthFailPage/>}/>
