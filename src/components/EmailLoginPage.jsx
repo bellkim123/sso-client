@@ -1,55 +1,6 @@
-﻿import React from "react";
+﻿import React, { useState } from "react";
 import { BASE_URL, SERVICE_TYPE } from "../config/apiConfig";
-
-function EmailLoginPage() {
-    return (
-        <div style={pageStyle}>
-            <form
-                method="POST"
-                action={`${BASE_URL}/login`}  // 환경변수 기반 URL 사용
-                style={formStyle}
-            >
-                <h2 style={headingStyle}>이메일 로그인</h2>
-                <div style={inputGroupStyle}>
-                    <input
-                        name="email"
-                        type="email"
-                        placeholder="이메일"
-                        required
-                        autoComplete="username"
-                        style={inputStyle}
-                    />
-                    <input
-                        name="password"
-                        type="password"
-                        placeholder="비밀번호"
-                        required
-                        autoComplete="current-password"
-                        style={inputStyle}
-                    />
-                    <input
-                        type="hidden"
-                        name="serviceType"
-                        value={SERVICE_TYPE}  // config에서 관리하는 문자열 사용
-                    />
-                </div>
-                <button type="submit" style={btnStyle}>
-                    로그인
-                </button>
-                <p style={helperStyle}>
-                    아직 계정이 없으신가요?{" "}
-                    <a href="/register" style={linkStyle}>회원가입</a>
-                </p>
-                <p style={{ ...helperStyle, marginTop: 6 }}>
-                    비밀번호를 잃어버리셨나요?{" "}
-                    <a href="/password-reset-link" style={linkStyle}>비밀번호 재설정</a>
-                </p>
-            </form>
-        </div>
-    );
-}
-
-// ===== 스타일 (생략 가능, 기존과 동일하게 유지) =====
+import { useNavigate } from "react-router-dom";
 
 const pageStyle = {
     minHeight: "100vh",
@@ -59,17 +10,15 @@ const pageStyle = {
     background: "#fff",
     fontFamily: "sans-serif",
 };
-
 const formStyle = {
     background: "#fff",
     padding: "2.5rem 2.3rem 2.2rem",
     borderRadius: "22px",
-    boxShadow: "0 12px 32px rgba(140, 94, 161, 0.10)",
+    boxShadow: "0 12px 32px rgba(140, 94, 161, 0.1)",
     width: 350,
     textAlign: "center",
     minWidth: 320,
 };
-
 const headingStyle = {
     color: "#7C3AED",
     marginBottom: "2rem",
@@ -77,7 +26,6 @@ const headingStyle = {
     fontSize: "1.3rem",
     letterSpacing: "-0.02em",
 };
-
 const inputGroupStyle = {
     width: "100%",
     display: "flex",
@@ -85,7 +33,6 @@ const inputGroupStyle = {
     gap: "0.7rem",
     marginBottom: "1.25rem",
 };
-
 const inputStyle = {
     width: "100%",
     padding: "0.92rem",
@@ -98,7 +45,6 @@ const inputStyle = {
     outline: "none",
     boxSizing: "border-box",
 };
-
 const btnStyle = {
     width: "100%",
     padding: "0.95rem",
@@ -119,12 +65,99 @@ const helperStyle = {
     color: "#b7a6e7",
     fontSize: "0.95rem",
 };
-
 const linkStyle = {
     color: "#7C3AED",
     fontWeight: "bold",
     textDecoration: "none",
     transition: "color 0.15s",
 };
+
+function EmailLoginPage({ onLoginSuccess }) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setErrorMsg("");
+        setLoading(true);
+
+        try {
+            const response = await fetch(`${BASE_URL}/auth/email/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email,
+                    password,
+                    serviceType: SERVICE_TYPE,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {  // <=== 소문자 success 주의
+                setErrorMsg(result.message || "로그인에 실패했습니다.");  // <=== message 소문자
+            } else {
+                const { accessToken, refreshToken } = result.data;  // <=== camelCase 키
+                onLoginSuccess(accessToken, refreshToken, navigate);
+            }
+        } catch {
+            setErrorMsg("서버와 연결할 수 없습니다.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div style={pageStyle}>
+            <form onSubmit={handleSubmit} style={formStyle}>
+                <h2 style={headingStyle}>이메일 로그인</h2>
+                <div style={inputGroupStyle}>
+                    <input
+                        name="email"
+                        type="email"
+                        placeholder="이메일"
+                        required
+                        autoComplete="username"
+                        style={inputStyle}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        disabled={loading}
+                    />
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="비밀번호"
+                        required
+                        autoComplete="current-password"
+                        style={inputStyle}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        disabled={loading}
+                    />
+                </div>
+                <button type="submit" style={btnStyle} disabled={loading}>
+                    {loading ? "로그인 중..." : "로그인"}
+                </button>
+                {errorMsg && <p style={{ ...helperStyle, color: "red" }}>{errorMsg}</p>}
+
+                <p style={helperStyle}>
+                    아직 계정이 없으신가요?{" "}
+                    <a href="/register" style={linkStyle}>
+                        회원가입
+                    </a>
+                </p>
+                <p style={{ ...helperStyle, marginTop: 6 }}>
+                    비밀번호를 잃어버리셨나요?{" "}
+                    <a href="/password-reset-link" style={linkStyle}>
+                        비밀번호 재설정
+                    </a>
+                </p>
+            </form>
+        </div>
+    );
+}
 
 export default EmailLoginPage;

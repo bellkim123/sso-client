@@ -182,8 +182,6 @@ function LoginSuccess() {
   </span>
                     <span>{countdown}초 후 메인 페이지로 이동합니다.</span>
                 </p>
-
-                {/* CSS에 이 코드 추가 */}
                 <style>
                     {`
     @keyframes bounce {

@@ -2,7 +2,7 @@
 
 /** 이메일 인증번호 발송 */
 export async function sendVerificationCode(email) {
-    const res = await fetch(`${BASE_URL}/send-verification`, {
+    const res = await fetch(`${BASE_URL}/auth/email/send-verification`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ serviceType: SERVICE_TYPE, email }),
@@ -14,7 +14,7 @@ export async function sendVerificationCode(email) {
 
 /** 인증번호 검증 */
 export async function verifyCode(email, code) {
-    const res = await fetch(`${BASE_URL}/verify-code`, {
+    const res = await fetch(`${BASE_URL}/auth/email/verify-code`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ serviceType: SERVICE_TYPE, email, code }),
@@ -26,7 +26,7 @@ export async function verifyCode(email, code) {
 
 /** 회원가입 */
 export async function registerWithEmail(email, password, verificationCode) {
-    const res = await fetch(`${BASE_URL}/register`, {
+    const res = await fetch(`${BASE_URL}/auth/email/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

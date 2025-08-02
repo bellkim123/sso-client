@@ -1,5 +1,6 @@
+// App.js
 import {useEffect, useState} from "react";
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, useNavigate} from "react-router-dom";
 import AuthCallback from "./components/AuthCallback";
 import LoginSuccess from "./components/LoginSuccess";
 import Main from "./components/Main";
@@ -33,15 +34,11 @@ function App() {
         function onNaverLogin(event) {
             if (event.origin !== window.location.origin) return;
             if (event.data.type === "NAVER_LOGIN_SUCCESS") {
-                // ⬇️ postMessage로 받은 토큰을 반드시 메인창에서 직접 저장!
                 const {accessToken, refreshToken} = event.data.payload;
                 localStorage.setItem("access_token", accessToken);
                 localStorage.setItem("refresh_token", refreshToken);
-                // 상태 갱신
                 setAccessToken(accessToken);
                 setRefreshToken(refreshToken);
-                // 완벽 반영 원하면 새로고침까지
-                // window.location.reload();
             }
         }
 
@@ -63,6 +60,15 @@ function App() {
         window.location.href = "/";
     };
 
+    // 이메일 로그인 성공 시 토큰을 저장하고 메인 페이지로 이동하는 콜백
+    const handleEmailLoginSuccess = (access, refresh, navigate) => {
+        localStorage.setItem("access_token", access);
+        localStorage.setItem("refresh_token", refresh);
+        setAccessToken(access);
+        setRefreshToken(refresh);
+        navigate("/");  // 메인 페이지 이동
+    };
+
     return (
         <Router>
             <Routes>
@@ -71,7 +77,12 @@ function App() {
                 <Route path="/login-success" element={<LoginSuccess handleLogout={handleLogout}/>}/>
                 <Route path="/pass-auth-success" element={<PassAuthSuccessPage/>}/>
                 <Route path="/pass-auth-fail" element={<PassAuthFailPage/>}/>
-                <Route path="/email-login" element={<EmailLoginPage/>}/>
+                <Route
+                    path="/email-login"
+                    element={
+                        <EmailLoginPage onLoginSuccess={handleEmailLoginSuccess}/>
+                    }
+                />
                 <Route path="/register" element={<RegisterPage/>}/>
                 <Route path="/password-reset-link" element={<SendResetLinkPage/>}/>
                 <Route path="/password-reset" element={<ResetPasswordPage/>}/>

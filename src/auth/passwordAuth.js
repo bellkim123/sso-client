@@ -2,7 +2,7 @@ import { BASE_URL, SERVICE_TYPE } from "../config/apiConfig";
 
 /** 비밀번호 재설정 링크 이메일 발송 */
 export async function sendResetLink(email) {
-    const res = await fetch(`${BASE_URL}/send-reset-link`, {
+    const res = await fetch(`${BASE_URL}/auth/email/send-reset-link`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, serviceType: SERVICE_TYPE }),
@@ -16,7 +16,7 @@ export async function sendResetLink(email) {
 
 /** 비밀번호 재설정 제출 */
 export async function resetPassword(token, newPassword) {
-    const res = await fetch(`${BASE_URL}/reset-password`, {
+    const res = await fetch(`${BASE_URL}/auth/email/reset-password`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, newPassword }),
