@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+﻿import React, {useEffect, useState} from "react";
 import Cookies from "js-cookie";
 import kakaoBtn from "../assets/kakao-login-button.png";
 import naverBtn from "../assets/naver-login-button.png";
@@ -16,8 +16,8 @@ function Main({
         "https://i.pinimg.com/736x/2b/45/45/2b4545e9efe40d7aecd1cf04693658f1.jpg";
 
     useEffect(() => {
-        if (accessToken) Cookies.set("accessToken", accessToken, { expires: 1 });
-        if (refreshToken) Cookies.set("refreshToken", refreshToken, { expires: 7 });
+        if (accessToken) Cookies.set("accessToken", accessToken, {expires: 1});
+        if (refreshToken) Cookies.set("refreshToken", refreshToken, {expires: 7});
     }, [accessToken, refreshToken]);
 
     useEffect(() => {
@@ -49,12 +49,12 @@ function Main({
             delete window.nicepayClose;
         };
     }, []);
-    const [copied, setCopied] = useState({ key: "", show: false });
+    const [copied, setCopied] = useState({key: "", show: false});
 
     const handleCopy = (key, value) => {
         navigator.clipboard.writeText(value || "");
-        setCopied({ key, show: true });
-        setTimeout(() => setCopied({ key: "", show: false }), 1300);
+        setCopied({key, show: true});
+        setTimeout(() => setCopied({key: "", show: false}), 1300);
     };
 
     useEffect(() => {
@@ -91,7 +91,7 @@ function Main({
                     position: "relative",
                 }}
             >
-                <h1 style={{ marginBottom: "2.2rem", color: "#34495e" }}>
+                <h1 style={{marginBottom: "2.2rem", color: "#34495e"}}>
                     SSO 클라이언트
                 </h1>
                 {accessToken ? (
@@ -117,7 +117,7 @@ function Main({
 }
 
 // 복사 아이콘
-function CopyIcon({ style }) {
+function CopyIcon({style}) {
     return (
         <svg
             style={style}
@@ -127,9 +127,9 @@ function CopyIcon({ style }) {
             fill="none"
             aria-hidden="true"
         >
-            <rect x="5" y="7" width="10" height="10" rx="3" fill="#0984e3" />
-            <rect x="7" y="3" width="8" height="12" rx="2" fill="#dff9fb" />
-            <rect x="6" y="2" width="10" height="12" rx="2" fill="#0984e3" />
+            <rect x="5" y="7" width="10" height="10" rx="3" fill="#0984e3"/>
+            <rect x="7" y="3" width="8" height="12" rx="2" fill="#dff9fb"/>
+            <rect x="6" y="2" width="10" height="12" rx="2" fill="#0984e3"/>
         </svg>
     );
 }
@@ -189,7 +189,7 @@ function LoggedInCard({
                         Authorization: `Bearer ${accessToken}`,
                     },
                     body: JSON.stringify({
-                        orderPrepareId: "21c1753b-bf6c-49ca-b73e-9b991943ebb6",
+                        orderPrepareId: "9944f119-50ed-49c6-8a67-3b95cc77f137",
                         payMethod: "Card",
                         goodsName: "테스트 상품",
                     }),
@@ -197,7 +197,7 @@ function LoggedInCard({
             );
 
             if (!response.ok) throw new Error("결제 정보 요청 실패");
-            const { data } = await response.json();
+            const {data} = await response.json();
 
             // ✅ name="payForm" 추가
             const form = document.createElement("form");
@@ -265,14 +265,14 @@ function LoggedInCard({
                     }}
                 />
             </div>
-            <div style={{ color: "#009432", fontWeight: "bold", marginBottom: 30 }}>
+            <div style={{color: "#009432", fontWeight: "bold", marginBottom: 30}}>
                 ✅ 로그인되었습니다
             </div>
 
             {/* Token UI */}
             {/* AccessToken */}
             <div style={fieldStyle}>
-                <span style={{ minWidth: 115, color: "#636e72" }}>AccessToken:</span>
+                <span style={{minWidth: 115, color: "#636e72"}}>AccessToken:</span>
                 <span
                     style={{
                         fontFamily: "monospace",
@@ -286,11 +286,11 @@ function LoggedInCard({
         </span>
                 <span
                     onClick={() => handleCopy("accessToken", accessToken)}
-                    style={{ cursor: "pointer", marginLeft: 3, opacity: 0.85 }}
+                    style={{cursor: "pointer", marginLeft: 3, opacity: 0.85}}
                     title="AccessToken 복사"
                     role="button"
                 >
-          <CopyIcon />
+          <CopyIcon/>
         </span>
                 {copied.key === "accessToken" && copied.show && (
                     <span style={toastStyle}>복사되었습니다!</span>
@@ -299,7 +299,7 @@ function LoggedInCard({
 
             {/* RefreshToken */}
             <div style={fieldStyle}>
-                <span style={{ minWidth: 115, color: "#636e72" }}>RefreshToken:</span>
+                <span style={{minWidth: 115, color: "#636e72"}}>RefreshToken:</span>
                 <span
                     style={{
                         fontFamily: "monospace",
@@ -313,11 +313,11 @@ function LoggedInCard({
         </span>
                 <span
                     onClick={() => handleCopy("refreshToken", refreshToken)}
-                    style={{ cursor: "pointer", marginLeft: 3, opacity: 0.85 }}
+                    style={{cursor: "pointer", marginLeft: 3, opacity: 0.85}}
                     title="RefreshToken 복사"
                     role="button"
                 >
-          <CopyIcon />
+          <CopyIcon/>
         </span>
                 {copied.key === "refreshToken" && copied.show && (
                     <span style={toastStyle}>복사되었습니다!</span>
@@ -376,10 +376,10 @@ const btnStyle = (bg) => ({
 });
 
 // 로그인 버튼들
-function LoginButtons({ handleNaverLogin, handleKakaoLogin, handleEmailLogin }) {
+function LoginButtons({handleNaverLogin, handleKakaoLogin, handleEmailLogin}) {
     const BUTTON_HEIGHT = 54;
     const BUTTON_WIDTH = "100%";
-    const imgStyle = { width: "100%", height: "100%", objectFit: "cover" };
+    const imgStyle = {width: "100%", height: "100%", objectFit: "cover"};
     const btnStyle = {
         width: BUTTON_WIDTH,
         height: BUTTON_HEIGHT,
@@ -403,11 +403,11 @@ function LoginButtons({ handleNaverLogin, handleKakaoLogin, handleEmailLogin }) 
             >
                 로그인 해주세요😵‍💫
             </p>
-            <button onClick={handleNaverLogin} style={{ ...btnStyle, marginBottom: 14 }}>
-                <img src={naverBtn} alt="네이버 로그인 버튼" style={imgStyle} />
+            <button onClick={handleNaverLogin} style={{...btnStyle, marginBottom: 14}}>
+                <img src={naverBtn} alt="네이버 로그인 버튼" style={imgStyle}/>
             </button>
             <button onClick={handleKakaoLogin} style={btnStyle}>
-                <img src={kakaoBtn} alt="카카오 로그인 버튼" style={imgStyle} />
+                <img src={kakaoBtn} alt="카카오 로그인 버튼" style={imgStyle}/>
             </button>
             <button
                 onClick={() => (window.location.href = "/email-login")}
