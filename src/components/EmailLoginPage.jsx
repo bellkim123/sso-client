@@ -71,7 +71,6 @@ const linkStyle = {
     textDecoration: "none",
     transition: "color 0.15s",
 };
-
 function EmailLoginPage({ onLoginSuccess }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -88,22 +87,30 @@ function EmailLoginPage({ onLoginSuccess }) {
             const response = await fetch(`${BASE_URL}/auth/email/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    email,
-                    password,
-                    serviceType: SERVICE_TYPE,
-                }),
+                body: JSON.stringify({ email, password, serviceType: SERVICE_TYPE }),
+                // credentials: "include", // 쿠키 필요 시 주석 해제
             });
 
             const result = await response.json();
 
-            if (!response.ok || !result.success) {  // <=== 소문자 success 주의
-                setErrorMsg(result.message || "로그인에 실패했습니다.");  // <=== message 소문자
-            } else {
-                const { accessToken, refreshToken } = result.data;  // <=== camelCase 키
-                onLoginSuccess(accessToken, refreshToken, navigate);
+            if (!response.ok) {
+                const msg =
+                    (result && (result.message || result.error || result.detail)) ||
+                    "로그인에 실패했습니다.";
+                setErrorMsg(msg);
+                return;
             }
-        } catch {
+
+            const accessToken = result?.data?.accessToken;
+            const refreshToken = result?.data?.refreshToken;
+
+            if (!accessToken || !refreshToken) {
+                setErrorMsg("토큰 발급에 실패했습니다.");
+                return;
+            }
+
+            onLoginSuccess(accessToken, refreshToken, navigate);
+        } catch (err) {
             setErrorMsg("서버와 연결할 수 없습니다.");
         } finally {
             setLoading(false);

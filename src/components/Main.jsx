@@ -189,7 +189,7 @@ function LoggedInCard({
                         Authorization: `Bearer ${accessToken}`,
                     },
                     body: JSON.stringify({
-                        orderPrepareId: "9944f119-50ed-49c6-8a67-3b95cc77f137",
+                        orderPrepareId: "b1c575df-72fd-443b-a9f3-01054341b344",
                         payMethod: "Card",
                         goodsName: "테스트 상품",
                     }),
@@ -215,9 +215,9 @@ function LoggedInCard({
                 SignData: data.signData,
                 PayMethod: data.payMethodCode,
                 ReturnURL: "",
-                BuyerName: "홍길동",
-                BuyerEmail: "test@example.com",
-                BuyerTel: "01012345678",
+                ReqReserved: JSON.stringify({
+                    customerAddressId: 1
+                })
             };
 
             Object.keys(fields).forEach((key) => {
